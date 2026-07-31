@@ -1,0 +1,108 @@
+[gd_scene format=3 uid="uid://c4j4gltvh8ft8"]
+
+[ext_resource type="Texture2D" uid="uid://cors2bcts7l3j" path="res://Assets/Graphics/Snake_spritesheet.png" id="1_4xruw"]
+[ext_resource type="Script" uid="uid://cl6d3xtaatmtu" path="res://Scripts/main_scene.gd" id="1_5p0eq"]
+[ext_resource type="Texture2D" uid="uid://c7harkydrs16q" path="res://Assets/Graphics/apple.png" id="2_5p0eq"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1ig23"]
+resource_name = "Snake"
+texture = ExtResource("1_4xruw")
+texture_region_size = Vector2i(40, 40)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qtqr5"]
+texture = ExtResource("2_5p0eq")
+texture_region_size = Vector2i(40, 40)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_2itt3"]
+tile_size = Vector2i(40, 40)
+sources/1 = SubResource("TileSetAtlasSource_1ig23")
+sources/2 = SubResource("TileSetAtlasSource_qtqr5")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vixca"]
+size = Vector2(1169, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3fd10"]
+size = Vector2(662, 20)
+
+[node name="Node" type="Node" unique_id=854883222]
+script = ExtResource("1_5p0eq")
+
+[node name="TileMap" type="TileMap" parent="." unique_id=1630380008]
+tile_set = SubResource("TileSet_2itt3")
+format = 2
+
+[node name="Walls" type="StaticBody2D" parent="." unique_id=480872886]
+visible = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Walls" unique_id=317003533]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/StaticBody2D" unique_id=1847847487]
+position = Vector2(576, 0)
+shape = SubResource("RectangleShape2D_vixca")
+
+[node name="ColorRect" type="ColorRect" parent="Walls/StaticBody2D" unique_id=1849970545]
+offset_left = -8.0
+offset_top = -10.0
+offset_right = 1162.0
+offset_bottom = 9.0
+color = Color(0.93152094, 0.27779722, 0.252889, 1)
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Walls" unique_id=688220552]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/StaticBody2D2" unique_id=1522217946]
+position = Vector2(576, 654)
+shape = SubResource("RectangleShape2D_vixca")
+
+[node name="ColorRect" type="ColorRect" parent="Walls/StaticBody2D2" unique_id=1014101224]
+offset_left = -11.0
+offset_top = 645.0
+offset_right = 1159.0
+offset_bottom = 664.0
+color = Color(0.93152094, 0.27779722, 0.252889, 1)
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="Walls" unique_id=2035017788]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/StaticBody2D3" unique_id=1552437241]
+position = Vector2(-3.9999897, 332)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_3fd10")
+
+[node name="ColorRect" type="ColorRect" parent="Walls/StaticBody2D3" unique_id=1185242942]
+offset_left = 4.0
+offset_top = -3.0
+offset_right = 669.7688
+offset_bottom = 16.0
+rotation = 1.5707964
+color = Color(0.93152094, 0.27779722, 0.252889, 1)
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="Walls" unique_id=469544956]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/StaticBody2D4" unique_id=1553247558]
+position = Vector2(1158, 332)
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_3fd10")
+
+[node name="ColorRect" type="ColorRect" parent="Walls/StaticBody2D4" unique_id=918484086]
+offset_left = 1169.0
+offset_top = -3.0
+offset_right = 1834.7688
+offset_bottom = 16.0
+rotation = 1.5707964
+color = Color(0.93152094, 0.27779722, 0.252889, 1)

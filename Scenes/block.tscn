@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bhk6png6v5026"]
+
+[node name="Block" type="ColorRect" unique_id=1376133539]
+offset_right = 20.0
+offset_bottom = 20.0
