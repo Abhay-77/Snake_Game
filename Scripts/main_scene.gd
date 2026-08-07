@@ -2,6 +2,8 @@ extends Node
 
 @onready var tile_map: TileMap = $TileMap
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var timer: Timer = $Timer
 
 const SNAKE_LAYER = 2
 const PICKUP_LAYER = 1
@@ -23,13 +25,15 @@ var direction = Vector2i.ZERO
 var curr_dir = direction
 var time_passed = 0.0
 var apple_pos
+var game_over = false
 
 func _ready() -> void:
 	draw_snake()
 	place_apple()
 
-
 func _process(delta: float) -> void:
+	if game_over:
+		return
 	time_passed += delta
 	update_direction()
 	if time_passed >= MOVE_DELAY:
@@ -41,6 +45,8 @@ func move_snake():
 	if direction == Vector2i.ZERO:
 		return
 	var new_head = snake_body[0] + direction
+	if handle_game_loss(new_head):
+		return
 	curr_dir = direction
 	snake_body.push_front(new_head)
 	if new_head != apple_pos:
@@ -49,6 +55,15 @@ func move_snake():
 		tile_map.erase_cell(PICKUP_LAYER, apple_pos)
 		audio_player.play()
 		place_apple()
+
+func handle_game_loss(new_head):
+	var bounds = Rect2i(0, 0, 20, 20)
+	if new_head in snake_body or not bounds.has_point(new_head):
+		timer.start()
+		game_over = true
+		animation_player.play("gameOver")
+		return true
+	return false
 
 func draw_snake():
 	tile_map.clear_layer(SNAKE_LAYER)
@@ -73,7 +88,7 @@ func update_direction():
 		new_dir = Vector2i.DOWN
 	elif Input.is_action_just_pressed("move_up"):
 		new_dir = Vector2i.UP
-	elif Input.is_action_just_pressed("move_left"):
+	elif Input.is_action_just_pressed("move_left") and direction != Vector2i.ZERO:
 		new_dir = Vector2i.LEFT
 	elif Input.is_action_just_pressed("move_right"):
 		new_dir = Vector2i.RIGHT
@@ -81,3 +96,6 @@ func update_direction():
 		return
 	if new_dir + curr_dir != Vector2i.ZERO:
 		direction = new_dir
+
+func _on_timer_timeout() -> void:
+	get_tree().reload_current_scene()
