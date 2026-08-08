@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://b3jgktls5b8vy" path="res://Assets/Graphics/grass.png" id="2_4y1r4"]
 [ext_resource type="Texture2D" uid="uid://c7harkydrs16q" path="res://Assets/Graphics/apple.png" id="2_5p0eq"]
 [ext_resource type="AudioStream" uid="uid://duc03wh3sf46l" path="res://Assets/Sound/crunch.wav" id="5_6bry8"]
+[ext_resource type="FontFile" uid="uid://c2jp23luuu171" path="res://Assets/Font/PoetsenOne-Regular.ttf" id="6_x2kcs"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1ig23"]
 resource_name = "Snake"
@@ -46,12 +47,6 @@ sources/1 = SubResource("TileSetAtlasSource_1ig23")
 sources/2 = SubResource("TileSetAtlasSource_qtqr5")
 sources/3 = SubResource("TileSetAtlasSource_4y1r4")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vixca"]
-size = Vector2(1169, 20)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3fd10"]
-size = Vector2(662, 20)
-
 [sub_resource type="Animation" id="Animation_6bry8"]
 length = 0.001
 tracks/0/type = "value"
@@ -69,7 +64,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_x2kcs"]
 resource_name = "gameOver"
-length = 0.39999999999999997
+length = 0.4
 loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -90,6 +85,11 @@ _data = {
 &"gameOver": SubResource("Animation_x2kcs")
 }
 
+[sub_resource type="LabelSettings" id="LabelSettings_3ufom"]
+font = ExtResource("6_x2kcs")
+font_size = 68
+font_color = Color(0.8, 0.22399998, 0.22399998, 1)
+
 [node name="Node" type="Node" unique_id=854883222]
 script = ExtResource("1_5p0eq")
 
@@ -102,65 +102,6 @@ layer_1/name = "Pickup"
 layer_2/name = "Snake"
 layer_2/tile_data = PackedInt32Array(917513, 131073, 0, 917512, 458753, 0, 917511, 458753, 0, 917510, 458753, 0)
 
-[node name="Walls" type="StaticBody2D" parent="." unique_id=480872886]
-visible = false
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Walls" unique_id=317003533]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/StaticBody2D" unique_id=1847847487]
-position = Vector2(576, 0)
-shape = SubResource("RectangleShape2D_vixca")
-
-[node name="ColorRect" type="ColorRect" parent="Walls/StaticBody2D" unique_id=1849970545]
-offset_left = -8.0
-offset_top = -10.0
-offset_right = 1162.0
-offset_bottom = 9.0
-color = Color(0.93152094, 0.27779722, 0.252889, 1)
-
-[node name="StaticBody2D2" type="StaticBody2D" parent="Walls" unique_id=688220552]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/StaticBody2D2" unique_id=1522217946]
-position = Vector2(576, 654)
-shape = SubResource("RectangleShape2D_vixca")
-
-[node name="ColorRect" type="ColorRect" parent="Walls/StaticBody2D2" unique_id=1014101224]
-offset_left = -11.0
-offset_top = 645.0
-offset_right = 1159.0
-offset_bottom = 664.0
-color = Color(0.93152094, 0.27779722, 0.252889, 1)
-
-[node name="StaticBody2D3" type="StaticBody2D" parent="Walls" unique_id=2035017788]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/StaticBody2D3" unique_id=1552437241]
-position = Vector2(-3.9999897, 332)
-rotation = 1.5707964
-shape = SubResource("RectangleShape2D_3fd10")
-
-[node name="ColorRect" type="ColorRect" parent="Walls/StaticBody2D3" unique_id=1185242942]
-offset_left = 4.0
-offset_top = -3.0
-offset_right = 669.7688
-offset_bottom = 16.0
-rotation = 1.5707964
-color = Color(0.93152094, 0.27779722, 0.252889, 1)
-
-[node name="StaticBody2D4" type="StaticBody2D" parent="Walls" unique_id=469544956]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/StaticBody2D4" unique_id=1553247558]
-position = Vector2(1158, 332)
-rotation = 1.5707964
-shape = SubResource("RectangleShape2D_3fd10")
-
-[node name="ColorRect" type="ColorRect" parent="Walls/StaticBody2D4" unique_id=918484086]
-offset_left = 1169.0
-offset_top = -3.0
-offset_right = 1834.7688
-offset_bottom = 16.0
-rotation = 1.5707964
-color = Color(0.93152094, 0.27779722, 0.252889, 1)
-
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1624026894]
 stream = ExtResource("5_6bry8")
 
@@ -170,5 +111,16 @@ libraries/ = SubResource("AnimationLibrary_1l8qe")
 [node name="Timer" type="Timer" parent="." unique_id=1559229499]
 wait_time = 2.0
 one_shot = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1952401498]
+
+[node name="Label" type="Label" parent="CanvasLayer" unique_id=1625379332]
+visible = false
+offset_left = 221.0
+offset_top = 242.0
+offset_right = 569.0
+offset_bottom = 324.0
+text = "Game Over"
+label_settings = SubResource("LabelSettings_3ufom")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

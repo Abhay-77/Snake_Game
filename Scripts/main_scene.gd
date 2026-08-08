@@ -4,6 +4,7 @@ extends Node
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var timer: Timer = $Timer
+@onready var gameOverlabel: Label = $CanvasLayer/Label
 
 const SNAKE_LAYER = 2
 const PICKUP_LAYER = 1
@@ -61,6 +62,7 @@ func handle_game_loss(new_head):
 	if new_head in snake_body or not bounds.has_point(new_head):
 		timer.start()
 		game_over = true
+		gameOverlabel.visible = true
 		animation_player.play("gameOver")
 		return true
 	return false
