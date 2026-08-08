@@ -19,7 +19,27 @@ const SNAKE_HEAD_ATLAS_COORD = {
 	Vector2i.RIGHT: Vector2i(2, 0),
 	Vector2i.ZERO: Vector2i(2, 0)
 }
-const SNAKE_BODY_ATLAS_COORD = Vector2i(7, 0)
+const SNAKE_DEFAULT_BODY_ATLAS_COORD = Vector2i(7, 0)
+const SNAKE_TAIL_ATLAS_COORD = {
+	Vector2i.RIGHT: Vector2i(0,0),
+	Vector2i.LEFT: Vector2i(1,0),
+	Vector2i.UP: Vector2i(1,1),
+	Vector2i.DOWN: Vector2i(0,1),
+	Vector2i.ZERO: Vector2i(0, 0)
+}
+const SNAKE_BODY_ATLAS_COORD = {
+	Vector2i.RIGHT: Vector2i(4,0),
+	Vector2i.LEFT: Vector2i(4,0),
+	Vector2i.UP: Vector2i(4,1),
+	Vector2i.DOWN: Vector2i(4,1),
+	Vector2i.ZERO: Vector2i(4, 0)
+}
+const SNAKE_CORNER_BODY_ATLAS_COORD = {
+	Vector2i(1,-1): Vector2i(5,1),
+	Vector2i(-1,-1): Vector2i(6,1),
+	Vector2i(1,1): Vector2i(5,0),
+	Vector2i(-1,1): Vector2i(6,0)
+}
 const MOVE_DELAY = .2
 
 var snake_body = [Vector2i(5,10), Vector2i(4,10), Vector2i(3,10)]
@@ -74,11 +94,20 @@ func handle_game_loss(new_head):
 
 func draw_snake():
 	tile_map.clear_layer(SNAKE_LAYER)
-	for i in len(snake_body):
+	var n = snake_body.size()
+	for i in n:
 		if i == 0:
 			tile_map.set_cell(SNAKE_LAYER,snake_body[i],SNAKE_ID,SNAKE_HEAD_ATLAS_COORD[direction])
+			continue
+		var to = snake_body[i-1] - snake_body[i]
+		if i == n - 1:
+			tile_map.set_cell(SNAKE_LAYER,snake_body[i],SNAKE_ID,SNAKE_TAIL_ATLAS_COORD[to])
+			continue
+		var from = snake_body[i] - snake_body[i + 1]
+		if to == from:
+			tile_map.set_cell(SNAKE_LAYER,snake_body[i],SNAKE_ID,SNAKE_BODY_ATLAS_COORD[to])
 		else:
-			tile_map.set_cell(SNAKE_LAYER,snake_body[i],SNAKE_ID,SNAKE_BODY_ATLAS_COORD)
+			tile_map.set_cell(SNAKE_LAYER,snake_body[i],SNAKE_ID,SNAKE_CORNER_BODY_ATLAS_COORD[to - from])
 
 func place_apple():
 	while true:
