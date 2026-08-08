@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c7harkydrs16q" path="res://Assets/Graphics/apple.png" id="2_5p0eq"]
 [ext_resource type="AudioStream" uid="uid://duc03wh3sf46l" path="res://Assets/Sound/crunch.wav" id="5_6bry8"]
 [ext_resource type="FontFile" uid="uid://c2jp23luuu171" path="res://Assets/Font/PoetsenOne-Regular.ttf" id="6_x2kcs"]
+[ext_resource type="Script" uid="uid://c1cyuhxlawud8" path="res://Scripts/game_manager.gd" id="7_1l8qe"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1ig23"]
 resource_name = "Snake"
@@ -90,6 +91,11 @@ font = ExtResource("6_x2kcs")
 font_size = 68
 font_color = Color(0.8, 0.22399998, 0.22399998, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_pp1yn"]
+font = ExtResource("6_x2kcs")
+font_size = 32
+font_color = Color(0, 0, 0, 1)
+
 [node name="Node" type="Node" unique_id=854883222]
 script = ExtResource("1_5p0eq")
 
@@ -122,5 +128,16 @@ offset_right = 569.0
 offset_bottom = 324.0
 text = "Game Over"
 label_settings = SubResource("LabelSettings_3ufom")
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer" unique_id=1592662220]
+offset_left = 350.0
+offset_top = 9.0
+offset_right = 472.0
+offset_bottom = 48.0
+text = "Score: 0"
+label_settings = SubResource("LabelSettings_pp1yn")
+
+[node name="GameManager" type="Node" parent="." unique_id=101414485]
+script = ExtResource("7_1l8qe")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

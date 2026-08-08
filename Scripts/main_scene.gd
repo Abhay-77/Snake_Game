@@ -4,7 +4,8 @@ extends Node
 @onready var audio_player: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var timer: Timer = $Timer
-@onready var gameOverlabel: Label = $CanvasLayer/Label
+@onready var game_over_label: Label = $CanvasLayer/Label
+@onready var game_manager: Node = $GameManager
 
 const SNAKE_LAYER = 2
 const PICKUP_LAYER = 1
@@ -53,16 +54,20 @@ func move_snake():
 	if new_head != apple_pos:
 		snake_body.pop_back()
 	else:
-		tile_map.erase_cell(PICKUP_LAYER, apple_pos)
-		audio_player.play()
-		place_apple()
+		handle_apple_hit()
+
+func handle_apple_hit():
+	tile_map.erase_cell(PICKUP_LAYER, apple_pos)
+	audio_player.play()
+	game_manager.update_score()
+	place_apple()
 
 func handle_game_loss(new_head):
 	var bounds = Rect2i(0, 0, 20, 20)
 	if new_head in snake_body or not bounds.has_point(new_head):
 		timer.start()
 		game_over = true
-		gameOverlabel.visible = true
+		game_over_label.visible = true
 		animation_player.play("gameOver")
 		return true
 	return false
