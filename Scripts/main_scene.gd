@@ -19,7 +19,6 @@ const SNAKE_HEAD_ATLAS_COORD = {
 	Vector2i.RIGHT: Vector2i(2, 0),
 	Vector2i.ZERO: Vector2i(2, 0)
 }
-const SNAKE_DEFAULT_BODY_ATLAS_COORD = Vector2i(7, 0)
 const SNAKE_TAIL_ATLAS_COORD = {
 	Vector2i.RIGHT: Vector2i(0,0),
 	Vector2i.LEFT: Vector2i(1,0),
@@ -41,6 +40,7 @@ const SNAKE_CORNER_BODY_ATLAS_COORD = {
 	Vector2i(-1,1): Vector2i(6,0)
 }
 const MOVE_DELAY = .2
+const bounds = Rect2i(0, 0, 20, 20)
 
 var snake_body = [Vector2i(5,10), Vector2i(4,10), Vector2i(3,10)]
 var direction = Vector2i.ZERO
@@ -67,14 +67,14 @@ func move_snake():
 	if direction == Vector2i.ZERO:
 		return
 	var new_head = snake_body[0] + direction
-	if handle_game_loss(new_head):
-		return
 	curr_dir = direction
+	var will_grow = new_head == apple_pos
 	snake_body.push_front(new_head)
-	if new_head != apple_pos:
-		snake_body.pop_back()
-	else:
+	if will_grow:
 		handle_apple_hit()
+	else:
+		snake_body.pop_back()
+	handle_game_loss()
 
 func handle_apple_hit():
 	tile_map.erase_cell(PICKUP_LAYER, apple_pos)
@@ -82,9 +82,9 @@ func handle_apple_hit():
 	game_manager.update_score()
 	place_apple()
 
-func handle_game_loss(new_head):
-	var bounds = Rect2i(0, 0, 20, 20)
-	if new_head in snake_body or not bounds.has_point(new_head):
+func handle_game_loss():
+	var head = snake_body[0]
+	if snake_body.count(head) > 1 or not bounds.has_point(head):
 		timer.start()
 		game_over = true
 		game_over_label.visible = true
@@ -93,6 +93,8 @@ func handle_game_loss(new_head):
 	return false
 
 func draw_snake():
+	if game_over:
+		return
 	tile_map.clear_layer(SNAKE_LAYER)
 	var n = snake_body.size()
 	for i in n:
